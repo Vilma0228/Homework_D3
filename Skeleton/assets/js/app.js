@@ -1,7 +1,7 @@
 // Create var to set up chart
 var svgWidth = 800;
-var svgHeight = 500;
-var margin = {top: 20, right: 40, bottom: 60, left: 80};
+var svgHeight = 550;
+var margin = {top: 25, right: 40, bottom: 60, left: 80};
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
@@ -23,7 +23,7 @@ d3.csv("../../data/data.csv", function(err, healthData) {
     if(err) throw err;
 
     healthData.forEach(function(data) {
-        data.obesity = +data.obesity;
+        data.smokes = +data.smokes;
         data.poverty = +data.poverty;
     });
     
@@ -50,11 +50,11 @@ d3.csv("../../data/data.csv", function(err, healthData) {
     });
 
     yMin = d3.min(healthData, function(data) {
-        return +data.obesity * 0.95;
+        return +data.smokes * 0.80;
     });
 
     yMax = d3.max(healthData, function(data) {
-        return +data.obesity *1.02;
+        return +data.smokes *1.02;
     });
     
     xLinearScale.domain([xMin, xMax]);
@@ -69,9 +69,9 @@ d3.csv("../../data/data.csv", function(err, healthData) {
         .html(function(data) {
             var stateName = data.state;
             var pov = +data.poverty;
-            var obe = +data.obesity;
+            var smo = +data.smokes;
             return (
-                stateName + '<br> Poverty: ' + pov + '% <br> Obesity: ' + obe +'%'
+                stateName + '<br> Poverty: ' + pov + '% <br> Smokes: ' + smo +'%'
             );
         });
 
@@ -86,7 +86,7 @@ d3.csv("../../data/data.csv", function(err, healthData) {
             return xLinearScale(data.poverty)
         })
         .attr("cy", function(data, index) {
-            return yLinearScale(data.obesity)
+            return yLinearScale(data.smokes)
         })
         .attr("r", "15")
         .attr("fill", "lightblue")
@@ -111,7 +111,7 @@ d3.csv("../../data/data.csv", function(err, healthData) {
                 return xLinearScale(data.poverty - 0);
             })
             .attr("y", function(data) {
-                return yLinearScale(data.obesity - 0.2);
+                return yLinearScale(data.smokes - 0.2);
             })
             .text(function(data) {
                 return data.abbr
@@ -134,7 +134,7 @@ d3.csv("../../data/data.csv", function(err, healthData) {
         .attr("x", 0 - height/2)
         .attr("dy","1em")
         .attr("class", "axis-text")
-        .text("Obesity (%)")
+        .text("Smokes (%)")
 
     // Append x-axis labels
     chart
